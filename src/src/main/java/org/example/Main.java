@@ -1,10 +1,14 @@
 package org.example;
 
+import java.io.FileWriter;
+import java.io.IOException;
+
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
+
 import org.apache.log4j.Logger;
 import org.example.data.Resident;
 
@@ -62,6 +66,28 @@ final class Main {
 
         TypedQuery<Object[]> typedQuery = em.createQuery(criteriaQuery);
         List<Object[]> results = typedQuery.getResultList();
+
+        // Шлях до файлу, куди ви хочете записати результати
+        String filePath = "result.txt";
+
+        try (FileWriter fileWriter = new FileWriter(filePath)) {
+            // Запис результатів в файл
+            for (Object[] result : results) {
+                fileWriter.write("Прізвище: " + result[0] + "\n");
+                fileWriter.write("Ім'я: " + result[1] + "\n");
+                fileWriter.write("По батькові: " + result[2] + "\n");
+                fileWriter.write("Телефон: " + result[3] + "\n");
+                fileWriter.write("Електрона пошта: " + result[4] + "\n");
+                fileWriter.write("Вулиця: " + result[5] + "\n");
+                fileWriter.write("Будинок: " + result[6] + "\n");
+                fileWriter.write("Квартира: " + result[7] + "\n");
+                fileWriter.write("Площадь: " + result[8] + "\n\n");
+            }
+
+            System.out.println("Результати записані в файл " + filePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         em.close();
         emf.close();

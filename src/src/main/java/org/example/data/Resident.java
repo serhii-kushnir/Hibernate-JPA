@@ -3,6 +3,8 @@ package org.example.data;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
 @IdClass(Resident.class)
 public class Resident {
@@ -41,5 +43,18 @@ public class Resident {
 
     public void setEntryRightsTerritory(boolean entryRightsTerritory) {
         this.entryRightsTerritory = entryRightsTerritory;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Resident resident = (Resident) o;
+        return entryRightsTerritory == resident.entryRightsTerritory && Objects.equals(memberOsbb, resident.memberOsbb) && Objects.equals(apartment, resident.apartment);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(memberOsbb, apartment, entryRightsTerritory);
     }
 }
