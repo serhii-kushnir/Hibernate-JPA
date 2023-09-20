@@ -20,6 +20,9 @@ public class House {
     @OneToMany(mappedBy = "house", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Apartment> apartments = new ArrayList<>();
 
+    public House() {
+    }
+
     public House(int id, String address, int number, List<Apartment> apartments) {
         this.id = id;
         this.address = address;

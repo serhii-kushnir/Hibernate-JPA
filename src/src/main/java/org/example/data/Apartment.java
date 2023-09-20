@@ -15,8 +15,11 @@ public class Apartment {
     private float square;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "house_id")
+    @JoinColumn(name = "houses_id")
     private House house;
+
+    public Apartment() {
+    }
 
     public Apartment(int id, int number, float square, House house, List<Resident> residents, List<Ownership> ownerships) {
         this.id = id;

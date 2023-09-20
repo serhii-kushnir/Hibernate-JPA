@@ -23,11 +23,14 @@ public class MemberOsbb {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "memberOsbb")
+    @OneToMany(mappedBy = "memberOsbb", cascade = CascadeType.ALL)
     private List<Resident> residents;
 
-    @OneToMany(mappedBy = "memberOsbb")
+    @OneToMany(mappedBy = "memberOsbb", cascade = CascadeType.ALL)
     private List<Ownership> ownerships;
+
+    public MemberOsbb() {
+    }
 
     public MemberOsbb(int id, int phoneNumber, String surname, String name, String patronymic, String email, Role role, List<Resident> residents, List<Ownership> ownerships) {
         this.id = id;

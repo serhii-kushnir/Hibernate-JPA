@@ -1,17 +1,10 @@
 package org.example;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
-import jakarta.persistence.TypedQuery;
+import jakarta.persistence.*;
 import jakarta.persistence.criteria.*;
 
 import org.apache.log4j.Logger;
-import org.example.data.Apartment;
-import org.example.data.House;
-import org.example.data.MemberOsbb;
-import org.example.data.Resident;
-
+import org.example.data.*;
 
 
 import java.util.List;
@@ -30,21 +23,26 @@ final class Main {
     }
 
     private static void sql() {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("OSBB");
-        EntityManager em = emf.createEntityManager();
+        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("OSBB");
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
 
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Resident> cq = cb.createQuery(Resident.class);
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Object[]> criteriaQuery = criteriaBuilder.createQuery(Object[].class);
 
-        Root<Resident> root = cq.from(Resident.class);
-        Join<Resident, Apartment> apartmentJoin = root.join("apartment");
+        Root<Resident> residentRoot = criteriaQuery.from(Resident.class);
+        Join<Resident, MemberOsbb> memberOsbbJoin = residentRoot.join("memberOsbb");
+        Join<Resident, Apartment> apartmentJoin = residentRoot.join("apartment");
         Join<Apartment, House> houseJoin = apartmentJoin.join("house");
-        Join<Resident, MemberOsbb> memberOsbbJoin = root.join("memberOsbb");
 
-        Predicate entryRightsTerritoryPredicate = cb.isFalse(root.get("entryRightsTerritory"));
-        Predicate residentCountPredicate = cb.lessThan(cb.size(memberOsbbJoin.get("residents")), 2);
+        Subquery<Long> subquery = criteriaQuery.subquery(Long.class);
+        Root<Resident> subqueryRoot = subquery.from(Resident.class);
 
-        cq.multiselect(
+        subquery.select(criteriaBuilder.count(subqueryRoot))
+                .where(criteriaBuilder.equal(subqueryRoot.get("memberOsbb").get("id"), memberOsbbJoin.get("id")));
+
+        ListJoin<MemberOsbb, Ownership> ownershipListJoin = memberOsbbJoin.joinList("ownerships");
+
+        criteriaQuery.multiselect(
                 memberOsbbJoin.get("surname"),
                 memberOsbbJoin.get("name"),
                 memberOsbbJoin.get("patronymic"),
@@ -54,25 +52,39 @@ final class Main {
                 apartmentJoin.get("number"),
                 apartmentJoin.get("square")
         );
+//                .where(
+//                criteriaBuilder.and(
+//                        criteriaBuilder.lessThan(subquery, 2L),
+//                        criteriaBuilder.isFalse(residentRoot.get("entryRightsTerritory"))
+//                )
+//        );
 
-        cq.where(cb.and(entryRightsTerritoryPredicate, residentCountPredicate));
+        List<Object[]> resultList = entityManager.createQuery(criteriaQuery).getResultList();
 
-        TypedQuery<Resident> query = em.createQuery(cq);
-        List<Resident> residents = query.getResultList();
+        for (Object[] result : resultList) {
+            String surname = (String) result[0];
+            String name = (String) result[1];
+            String patronymic = (String) result[2];
+            String email = (String) result[3];
+            Integer houseNumber = (Integer) result[4];
+            String houseAddress = (String) result[5];
+            Integer apartmentNumber = (Integer) result[6];
+            float apartmentSquare = (float) result[7];
 
-        for (Resident resident : residents) {
-            System.out.println("______________________");
-            System.out.println("ПІБ: " + resident.getMemberOsbb().getSurname() + " " +
-                    resident.getMemberOsbb().getName() + " " +
-                    resident.getMemberOsbb().getPatronymic());
-            System.out.println("Email: " + resident.getMemberOsbb().getEmail());
-            System.out.println("Номер будинку: " + resident.getApartment().getHouse().getNumber());
-            System.out.println("Адреса будинку: " + resident.getApartment().getHouse().getAddress());
-            System.out.println("Номер квартири: " + resident.getApartment().getNumber());
-            System.out.println("Площа квартири: " + resident.getApartment().getSquare());
+            System.out.println("Прізвище: " + surname);
+            System.out.println("Ім'я: " + name);
+            System.out.println("По батькові: " + patronymic);
+            System.out.println("Електронна пошта: " + email);
+            System.out.println("Номер будинку: " + houseNumber);
+            System.out.println("Адреса будинку: " + houseAddress);
+            System.out.println("Номер квартири: " + apartmentNumber);
+            System.out.println("Площа квартири: " + apartmentSquare);
+            System.out.println("-----------------------");
         }
 
-        em.close();
-        emf.close();
+        entityManager.close();
+        entityManagerFactory.close();
     }
 }
+
+

@@ -23,6 +23,9 @@ public class Resident {
     @Column(name = "entry_rights_territory")
     private boolean entryRightsTerritory;
 
+    public Resident() {
+    }
+
     public Resident(MemberOsbb memberOsbb, Apartment apartment, boolean entryRightsTerritory) {
         this.memberOsbb = memberOsbb;
         this.apartment = apartment;

@@ -10,14 +10,17 @@ import java.util.Objects;
 @IdClass(Ownership.class)
 public class Ownership {
     @Id
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "members_osbb_id")
     private MemberOsbb memberOsbb;
 
     @Id
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "apartments_id")
     private Apartment apartment;
+
+    public Ownership() {
+    }
 
     public Ownership(MemberOsbb memberOsbb, Apartment apartment) {
         this.memberOsbb = memberOsbb;
