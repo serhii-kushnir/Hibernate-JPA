@@ -1,6 +1,5 @@
 package org.example.data;
 
-
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -8,7 +7,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "residents")
 @IdClass(Resident.class)
-public class Resident {
+final public class Resident {
 
     @Id
     @ManyToOne
@@ -26,7 +25,7 @@ public class Resident {
     public Resident() {
     }
 
-    public Resident(MemberOsbb memberOsbb, Apartment apartment, boolean entryRightsTerritory) {
+    public Resident(final MemberOsbb memberOsbb, final Apartment apartment, final boolean entryRightsTerritory) {
         this.memberOsbb = memberOsbb;
         this.apartment = apartment;
         this.entryRightsTerritory = entryRightsTerritory;
@@ -36,7 +35,7 @@ public class Resident {
         return memberOsbb;
     }
 
-    public void setMemberOsbb(MemberOsbb memberOsbb) {
+    public void setMemberOsbb(final MemberOsbb memberOsbb) {
         this.memberOsbb = memberOsbb;
     }
 
@@ -44,7 +43,7 @@ public class Resident {
         return apartment;
     }
 
-    public void setApartment(Apartment apartment) {
+    public void setApartment(final Apartment apartment) {
         this.apartment = apartment;
     }
 
@@ -52,23 +51,31 @@ public class Resident {
         return entryRightsTerritory;
     }
 
-    public void setEntryRightsTerritory(boolean entryRightsTerritory) {
+    public void setEntryRightsTerritory(final boolean entryRightsTerritory) {
         this.entryRightsTerritory = entryRightsTerritory;
     }
 
     @Override
     public String toString() {
-        return "Resident{" +
-                "memberOsbb=" + memberOsbb +
-                ", apartment=" + apartment +
-                ", entryRightsTerritory=" + entryRightsTerritory +
-                '}';
+        return "Resident{"
+                + "memberOsbb="
+                + memberOsbb
+                + ", apartment="
+                + apartment
+                + ", entryRightsTerritory=" + entryRightsTerritory
+                + '}';
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
         Resident resident = (Resident) o;
         return entryRightsTerritory == resident.entryRightsTerritory && Objects.equals(memberOsbb, resident.memberOsbb) && Objects.equals(apartment, resident.apartment);
     }

@@ -7,7 +7,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "apartments")
-public class Apartment {
+final public class Apartment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -21,7 +21,7 @@ public class Apartment {
     public Apartment() {
     }
 
-    public Apartment(int id, int number, float square, House house, List<Resident> residents, List<Ownership> ownerships) {
+    public Apartment(final int id, final int number, final float square, final House house, final List<Resident> residents, final List<Ownership> ownerships) {
         this.id = id;
         this.number = number;
         this.square = square;
@@ -30,7 +30,7 @@ public class Apartment {
         this.ownerships = ownerships;
     }
 
-    public void setHouse(House house) {
+    public void setHouse(final House house) {
         this.house = house;
     }
 
@@ -44,7 +44,7 @@ public class Apartment {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(final int id) {
         this.id = id;
     }
 
@@ -52,7 +52,7 @@ public class Apartment {
         return number;
     }
 
-    public void setNumber(int number) {
+    public void setNumber(final int number) {
         this.number = number;
     }
 
@@ -60,7 +60,7 @@ public class Apartment {
         return square;
     }
 
-    public void setSquare(float square) {
+    public void setSquare(final float square) {
         this.square = square;
     }
 
@@ -72,7 +72,7 @@ public class Apartment {
         return residents;
     }
 
-    public void setResidents(List<Resident> residents) {
+    public void setResidents(final List<Resident> residents) {
         this.residents = residents;
     }
 
@@ -80,14 +80,20 @@ public class Apartment {
         return ownerships;
     }
 
-    public void setOwnerships(List<Ownership> ownerships) {
+    public void setOwnerships(final List<Ownership> ownerships) {
         this.ownerships = ownerships;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
         Apartment apartment = (Apartment) o;
         return id == apartment.id && number == apartment.number && Float.compare(square, apartment.square) == 0 && Objects.equals(house, apartment.house) && Objects.equals(residents, apartment.residents) && Objects.equals(ownerships, apartment.ownerships);
     }

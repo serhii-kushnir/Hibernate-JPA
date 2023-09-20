@@ -1,6 +1,5 @@
 package org.example.data;
 
-
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -8,7 +7,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "ownerships")
 @IdClass(Ownership.class)
-public class Ownership {
+final public class Ownership {
     @Id
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "members_osbb_id")
@@ -22,7 +21,7 @@ public class Ownership {
     public Ownership() {
     }
 
-    public Ownership(MemberOsbb memberOsbb, Apartment apartment) {
+    public Ownership(final MemberOsbb memberOsbb, final Apartment apartment) {
         this.memberOsbb = memberOsbb;
         this.apartment = apartment;
     }
@@ -31,7 +30,7 @@ public class Ownership {
         return memberOsbb;
     }
 
-    public void setMemberOsbb(MemberOsbb memberOsbb) {
+    public void setMemberOsbb(final MemberOsbb memberOsbb) {
         this.memberOsbb = memberOsbb;
     }
 
@@ -39,14 +38,20 @@ public class Ownership {
         return apartment;
     }
 
-    public void setApartment(Apartment apartment) {
+    public void setApartment(final Apartment apartment) {
         this.apartment = apartment;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
         Ownership ownership = (Ownership) o;
         return Objects.equals(memberOsbb, ownership.memberOsbb) && Objects.equals(apartment, ownership.apartment);
     }

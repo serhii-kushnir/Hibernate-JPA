@@ -1,11 +1,14 @@
 package org.example;
 
-import jakarta.persistence.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 import jakarta.persistence.criteria.*;
-
 import org.apache.log4j.Logger;
-import org.example.data.*;
-
+import org.example.data.Apartment;
+import org.example.data.House;
+import org.example.data.MemberOsbb;
+import org.example.data.Resident;
 
 import java.util.List;
 
@@ -40,24 +43,22 @@ final class Main {
         subquery.select(criteriaBuilder.count(subqueryRoot))
                 .where(criteriaBuilder.equal(subqueryRoot.get("memberOsbb").get("id"), memberOsbbJoin.get("id")));
 
-        ListJoin<MemberOsbb, Ownership> ownershipListJoin = memberOsbbJoin.joinList("ownerships");
-
         criteriaQuery.multiselect(
-                memberOsbbJoin.get("surname"),
-                memberOsbbJoin.get("name"),
-                memberOsbbJoin.get("patronymic"),
-                memberOsbbJoin.get("email"),
-                houseJoin.get("number"),
-                houseJoin.get("address"),
-                apartmentJoin.get("number"),
-                apartmentJoin.get("square")
-        );
-//                .where(
-//                criteriaBuilder.and(
-//                        criteriaBuilder.lessThan(subquery, 2L),
-//                        criteriaBuilder.isFalse(residentRoot.get("entryRightsTerritory"))
-//                )
-//        );
+                        memberOsbbJoin.get("surname"),
+                        memberOsbbJoin.get("name"),
+                        memberOsbbJoin.get("patronymic"),
+                        memberOsbbJoin.get("email"),
+                        houseJoin.get("number"),
+                        houseJoin.get("address"),
+                        apartmentJoin.get("number"),
+                        apartmentJoin.get("square")
+                )
+                .where(
+                        criteriaBuilder.and(
+                                criteriaBuilder.lessThan(subquery, 2L),
+                                criteriaBuilder.isFalse(residentRoot.get("entryRightsTerritory"))
+                        )
+                );
 
         List<Object[]> resultList = entityManager.createQuery(criteriaQuery).getResultList();
 
@@ -86,5 +87,4 @@ final class Main {
         entityManagerFactory.close();
     }
 }
-
 
