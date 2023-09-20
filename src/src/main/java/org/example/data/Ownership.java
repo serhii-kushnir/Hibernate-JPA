@@ -6,17 +6,26 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
+@Table(name = "ownerships")
 @IdClass(Ownership.class)
 public class Ownership {
     @Id
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "members_osbb_id")
     private MemberOsbb memberOsbb;
 
     @Id
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "apartments_id")
     private Apartment apartment;
+
+    public Ownership() {
+    }
+
+    public Ownership(MemberOsbb memberOsbb, Apartment apartment) {
+        this.memberOsbb = memberOsbb;
+        this.apartment = apartment;
+    }
 
     public MemberOsbb getMemberOsbb() {
         return memberOsbb;
