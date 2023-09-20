@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
+@Table(name = "ownerships")
 @IdClass(Ownership.class)
 public class Ownership {
     @Id
@@ -17,6 +18,11 @@ public class Ownership {
     @ManyToOne
     @JoinColumn(name = "apartments_id")
     private Apartment apartment;
+
+    public Ownership(MemberOsbb memberOsbb, Apartment apartment) {
+        this.memberOsbb = memberOsbb;
+        this.apartment = apartment;
+    }
 
     public MemberOsbb getMemberOsbb() {
         return memberOsbb;

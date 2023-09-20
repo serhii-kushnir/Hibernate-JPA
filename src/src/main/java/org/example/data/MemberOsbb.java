@@ -8,10 +8,12 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Table(name = "members_osbb")
 public class MemberOsbb {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(name = "phone_number")
     private int phoneNumber;
     private String surname;
     private String name;
@@ -26,6 +28,18 @@ public class MemberOsbb {
 
     @OneToMany(mappedBy = "memberOsbb")
     private List<Ownership> ownerships;
+
+    public MemberOsbb(int id, int phoneNumber, String surname, String name, String patronymic, String email, Role role, List<Resident> residents, List<Ownership> ownerships) {
+        this.id = id;
+        this.phoneNumber = phoneNumber;
+        this.surname = surname;
+        this.name = name;
+        this.patronymic = patronymic;
+        this.email = email;
+        this.role = role;
+        this.residents = residents;
+        this.ownerships = ownerships;
+    }
 
     public int getId() {
         return id;
@@ -97,6 +111,21 @@ public class MemberOsbb {
 
     public void setOwnerships(List<Ownership> ownerships) {
         this.ownerships = ownerships;
+    }
+
+    @Override
+    public String toString() {
+        return "MemberOsbb{" +
+                "id=" + id +
+                ", phoneNumber=" + phoneNumber +
+                ", surname='" + surname + '\'' +
+                ", name='" + name + '\'' +
+                ", patronymic='" + patronymic + '\'' +
+                ", email='" + email + '\'' +
+                ", role=" + role +
+                ", residents=" + residents +
+                ", ownerships=" + ownerships +
+                '}';
     }
 
     @Override

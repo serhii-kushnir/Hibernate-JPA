@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
+@Table(name = "residents")
 @IdClass(Resident.class)
 public class Resident {
 
@@ -19,7 +20,14 @@ public class Resident {
     @JoinColumn(name = "apartments_id")
     private Apartment apartment;
 
+    @Column(name = "entry_rights_territory")
     private boolean entryRightsTerritory;
+
+    public Resident(MemberOsbb memberOsbb, Apartment apartment, boolean entryRightsTerritory) {
+        this.memberOsbb = memberOsbb;
+        this.apartment = apartment;
+        this.entryRightsTerritory = entryRightsTerritory;
+    }
 
     public MemberOsbb getMemberOsbb() {
         return memberOsbb;
@@ -43,6 +51,15 @@ public class Resident {
 
     public void setEntryRightsTerritory(boolean entryRightsTerritory) {
         this.entryRightsTerritory = entryRightsTerritory;
+    }
+
+    @Override
+    public String toString() {
+        return "Resident{" +
+                "memberOsbb=" + memberOsbb +
+                ", apartment=" + apartment +
+                ", entryRightsTerritory=" + entryRightsTerritory +
+                '}';
     }
 
     @Override
