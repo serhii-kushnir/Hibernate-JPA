@@ -1,7 +1,5 @@
 package org.example.data;
 
-
-
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -9,7 +7,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "members_osbb")
-public class MemberOsbb {
+final public class MemberOsbb {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -32,7 +30,7 @@ public class MemberOsbb {
     public MemberOsbb() {
     }
 
-    public MemberOsbb(int id, int phoneNumber, String surname, String name, String patronymic, String email, Role role, List<Resident> residents, List<Ownership> ownerships) {
+    public MemberOsbb(final int id, final int phoneNumber, final String surname, final String name, final String patronymic, final String email, final Role role, final List<Resident> residents, final List<Ownership> ownerships) {
         this.id = id;
         this.phoneNumber = phoneNumber;
         this.surname = surname;
@@ -56,7 +54,7 @@ public class MemberOsbb {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(final int phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
@@ -64,7 +62,7 @@ public class MemberOsbb {
         return surname;
     }
 
-    public void setSurname(String surname) {
+    public void setSurname(final String surname) {
         this.surname = surname;
     }
 
@@ -72,7 +70,7 @@ public class MemberOsbb {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -80,7 +78,7 @@ public class MemberOsbb {
         return patronymic;
     }
 
-    public void setPatronymic(String patronymic) {
+    public void setPatronymic(final String patronymic) {
         this.patronymic = patronymic;
     }
 
@@ -88,7 +86,7 @@ public class MemberOsbb {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(final String email) {
         this.email = email;
     }
 
@@ -96,7 +94,7 @@ public class MemberOsbb {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(final Role role) {
         this.role = role;
     }
 
@@ -104,7 +102,7 @@ public class MemberOsbb {
         return residents;
     }
 
-    public void setResidents(List<Resident> residents) {
+    public void setResidents(final List<Resident> residents) {
         this.residents = residents;
     }
 
@@ -112,29 +110,47 @@ public class MemberOsbb {
         return ownerships;
     }
 
-    public void setOwnerships(List<Ownership> ownerships) {
+    public void setOwnerships(final List<Ownership> ownerships) {
         this.ownerships = ownerships;
     }
 
     @Override
     public String toString() {
-        return "MemberOsbb{" +
-                "id=" + id +
-                ", phoneNumber=" + phoneNumber +
-                ", surname='" + surname + '\'' +
-                ", name='" + name + '\'' +
-                ", patronymic='" + patronymic + '\'' +
-                ", email='" + email + '\'' +
-                ", role=" + role +
-                ", residents=" + residents +
-                ", ownerships=" + ownerships +
-                '}';
+        return "MemberOsbb{"
+                + "id="
+                + id + ", phoneNumber="
+                + phoneNumber
+                + ", surname='"
+                + surname
+                + '\''
+                + ", name='"
+                + name
+                + '\''
+                + ", patronymic='"
+                + patronymic
+                + '\''
+                + ", email='"
+                + email
+                + '\''
+                + ", role="
+                + role
+                + ", residents="
+                + residents
+                + ", ownerships="
+                + ownerships
+                + '}';
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
         MemberOsbb that = (MemberOsbb) o;
         return id == that.id && phoneNumber == that.phoneNumber && Objects.equals(surname, that.surname) && Objects.equals(name, that.name) && Objects.equals(patronymic, that.patronymic) && Objects.equals(email, that.email) && role == that.role && Objects.equals(residents, that.residents) && Objects.equals(ownerships, that.ownerships);
     }

@@ -1,0 +1,9 @@
+UPDATE `osbb`.`members_osbb` SET `surname` = 'us01', `name` = 'us01', `patronymic` = 'us01' WHERE (`id` = '1');
+UPDATE `osbb`.`members_osbb` SET `surname` = 'us02', `name` = 'us02', `patronymic` = 'us02' WHERE (`id` = '2');
+UPDATE `osbb`.`members_osbb` SET `surname` = 'us03', `name` = 'us03', `patronymic` = 'us03' WHERE (`id` = '3');
+UPDATE `osbb`.`members_osbb` SET `surname` = 'us04', `name` = 'us04', `patronymic` = 'us04' WHERE (`id` = '4');
+UPDATE `osbb`.`members_osbb` SET `surname` = 'us05', `name` = 'us05', `patronymic` = 'us05' WHERE (`id` = '5');
+UPDATE `osbb`.`members_osbb` SET `surname` = 'us06', `name` = 'us06', `patronymic` = 'us06' WHERE (`id` = '6');
+UPDATE `osbb`.`members_osbb` SET `surname` = 'us07', `name` = 'us07', `patronymic` = 'us07' WHERE (`id` = '7');
+UPDATE `osbb`.`members_osbb` SET `surname` = 'us08', `name` = 'us08', `patronymic` = 'us08' WHERE (`id` = '8');
+UPDATE `osbb`.`members_osbb` SET `surname` = 'us09', `name` = 'us09', `patronymic` = 'us09' WHERE (`id` = '9');

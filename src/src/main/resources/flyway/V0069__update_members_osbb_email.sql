@@ -1,0 +1,14 @@
+UPDATE `osbb`.`members_osbb` SET `email` = 'us14@email.com' WHERE (`id` = '14');
+UPDATE `osbb`.`members_osbb` SET `email` = 'us13@email.com' WHERE (`id` = '13');
+UPDATE `osbb`.`members_osbb` SET `email` = 'us12@email.com' WHERE (`id` = '12');
+UPDATE `osbb`.`members_osbb` SET `email` = 'us11@email.com' WHERE (`id` = '11');
+UPDATE `osbb`.`members_osbb` SET `email` = 'us10@email.com' WHERE (`id` = '10');
+UPDATE `osbb`.`members_osbb` SET `email` = 'us09@email.com' WHERE (`id` = '9');
+UPDATE `osbb`.`members_osbb` SET `email` = 'us08@email.com' WHERE (`id` = '8');
+UPDATE `osbb`.`members_osbb` SET `email` = 'us07@email.com' WHERE (`id` = '7');
+UPDATE `osbb`.`members_osbb` SET `email` = 'us06@email.com' WHERE (`id` = '6');
+UPDATE `osbb`.`members_osbb` SET `email` = 'us05@email.com' WHERE (`id` = '5');
+UPDATE `osbb`.`members_osbb` SET `email` = 'us04@email.com' WHERE (`id` = '4');
+UPDATE `osbb`.`members_osbb` SET `email` = 'us03@email.com' WHERE (`id` = '3');
+UPDATE `osbb`.`members_osbb` SET `email` = 'us02@email.com' WHERE (`id` = '2');
+UPDATE `osbb`.`members_osbb` SET `email` = 'us01@email.com' WHERE (`id` = '1');
