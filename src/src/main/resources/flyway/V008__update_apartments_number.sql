@@ -1,0 +1,12 @@
+UPDATE `osbb`.`apartments` SET `number` = '245' WHERE (`id` = '13');
+UPDATE `osbb`.`apartments` SET `number` = '425' WHERE (`id` = '14');
+UPDATE `osbb`.`apartments` SET `number` = '333' WHERE (`id` = '16');
+UPDATE `osbb`.`apartments` SET `number` = '358' WHERE (`id` = '15');
+UPDATE `osbb`.`apartments` SET `number` = '388' WHERE (`id` = '17');
+UPDATE `osbb`.`apartments` SET `number` = '412' WHERE (`id` = '18');
+UPDATE `osbb`.`apartments` SET `number` = '451' WHERE (`id` = '28');
+UPDATE `osbb`.`apartments` SET `number` = '252' WHERE (`id` = '29');
+UPDATE `osbb`.`apartments` SET `number` = '358' WHERE (`id` = '30');
+UPDATE `osbb`.`apartments` SET `number` = '444' WHERE (`id` = '31');
+UPDATE `osbb`.`apartments` SET `number` = '381' WHERE (`id` = '32');
+UPDATE `osbb`.`apartments` SET `number` = '181' WHERE (`id` = '33');
