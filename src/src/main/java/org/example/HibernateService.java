@@ -2,7 +2,6 @@ package org.example;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
@@ -13,11 +12,14 @@ import org.example.data.House;
 import org.example.data.MemberOsbb;
 import org.example.data.Resident;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 
 public class HibernateService {
 
-    private static final Logger LOGGER = Logger.getLogger(Main.class);
+    private static final Logger LOGGER = Logger.getLogger(HibernateService.class);
 
     private static final String LINE = """
          |----------|------|-------------|--------------|------------------|---------|---------|----------|---------|
@@ -36,11 +38,22 @@ public class HibernateService {
         Root<Apartment> apartmentRoot = criteriaQuery.from(Apartment.class);
         Root<House> houseRoot = criteriaQuery.from(House.class);
 
-        Subquery<Long> subquery = criteriaQuery.subquery(Long.class);
-        Root<Resident> subqueryRoot = subquery.from(Resident.class);
+        criteriaQuery(criteriaQuery, criteriaBuilder, memberOsbbRoot, houseRoot, apartmentRoot, residentRoot);
 
-        subquery.select(criteriaBuilder.count(subqueryRoot))
-                .where(criteriaBuilder.equal(subqueryRoot.get("memberOsbb").get("id"), memberOsbbRoot.get("id")));
+        List<Object[]> resultList = entityManager.createQuery(criteriaQuery).getResultList();
+
+        printAllOwnersWithNotEnteTheTerritoryToConsole(resultList);
+        printAllOwnersWithNotEnterTheTerritoryToFile(resultList, "OwnerWithNotEnteTheTerritory.txt");
+
+        closable(entityManagerFactory, entityManager);
+    }
+
+    private static void criteriaQuery(CriteriaQuery<Object[]> criteriaQuery, CriteriaBuilder criteriaBuilder, Root<MemberOsbb> memberOsbbRoot, Root<House> houseRoot, Root<Apartment> apartmentRoot, Root<Resident> residentRoot) {
+        Subquery<Long> subquery = criteriaQuery.subquery(Long.class);
+        Root<Resident> subqueryResidentRoot = subquery.from(Resident.class);
+
+        subquery.select(criteriaBuilder.count(subqueryResidentRoot))
+                .where(criteriaBuilder.equal(subqueryResidentRoot.get("memberOsbb").get("id"), memberOsbbRoot.get("id")));
 
         criteriaQuery.multiselect(
                         memberOsbbRoot.get("surname"),
@@ -62,12 +75,6 @@ public class HibernateService {
                                 criteriaBuilder.equal(apartmentRoot.get("house").get("id"), houseRoot.get("id"))
                         )
                 );
-
-        List<Object[]> resultList = entityManager.createQuery(criteriaQuery).getResultList();
-
-        printAllOwnersWithNotEnteTheTerritoryToConsole(resultList);
-
-        closable(entityManagerFactory, entityManager);
     }
 
     private void printAllOwnersWithNotEnteTheTerritoryToConsole(final List<Object[]> resultList) {
@@ -79,6 +86,24 @@ public class HibernateService {
         }
 
         System.out.print(LINE);
+    }
+
+    private void printAllOwnersWithNotEnterTheTerritoryToFile(final List<Object[]> resultList, final String filePath) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            writer.write(LINE);
+            writer.write(NAMES_COLUMNS);
+
+            for (Object[] result : resultList) {
+                writer.write(formatOwnersColunms(result));
+                writer.newLine();
+            }
+
+            writer.write(LINE);
+
+            LOGGER.trace("The result is saved in the file: " + filePath);
+        } catch (IOException e) {
+            LOGGER.fatal("Failed to write to file: " + e.getMessage());
+        }
     }
 
     private String formatOwnersColunms(final Object[] objects) {
@@ -107,5 +132,4 @@ public class HibernateService {
         entityManagerFactory.close();
         entityManager.close();
     }
-
 }
