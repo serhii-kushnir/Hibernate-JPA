@@ -1,13 +1,22 @@
 package org.example.data;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.FetchType;
 
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "apartments")
-final public class Apartment {
+public final class Apartment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -85,6 +94,23 @@ final public class Apartment {
     }
 
     @Override
+    public String toString() {
+        return "Apartment{"
+                + "id=" + id
+                + ", number="
+                + number
+                + ", square="
+                + square
+                + ", house="
+                + house
+                + ", residents="
+                + residents
+                + ", ownerships="
+                + ownerships
+                + '}';
+    }
+
+    @Override
     public boolean equals(final Object o) {
         if (this == o) {
             return true;
@@ -95,7 +121,13 @@ final public class Apartment {
         }
 
         Apartment apartment = (Apartment) o;
-        return id == apartment.id && number == apartment.number && Float.compare(square, apartment.square) == 0 && Objects.equals(house, apartment.house) && Objects.equals(residents, apartment.residents) && Objects.equals(ownerships, apartment.ownerships);
+
+        return id == apartment.id
+                && number == apartment.number
+                && Float.compare(square, apartment.square) == 0
+                && Objects.equals(house, apartment.house)
+                && Objects.equals(residents, apartment.residents)
+                && Objects.equals(ownerships, apartment.ownerships);
     }
 
     @Override

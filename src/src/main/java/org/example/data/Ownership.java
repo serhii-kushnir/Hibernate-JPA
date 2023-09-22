@@ -1,13 +1,19 @@
 package org.example.data;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Entity;
+import jakarta.persistence.IdClass;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.CascadeType;
 
 import java.util.Objects;
 
 @Entity
 @Table(name = "ownerships")
 @IdClass(Ownership.class)
-final public class Ownership {
+public final class Ownership {
     @Id
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "members_osbb_id")
@@ -21,7 +27,8 @@ final public class Ownership {
     public Ownership() {
     }
 
-    public Ownership(final MemberOsbb memberOsbb, final Apartment apartment) {
+    public Ownership(final MemberOsbb memberOsbb,
+                     final Apartment apartment) {
         this.memberOsbb = memberOsbb;
         this.apartment = apartment;
     }
@@ -43,6 +50,15 @@ final public class Ownership {
     }
 
     @Override
+    public String toString() {
+        return "Ownership{"
+                + "memberOsbb="
+                + memberOsbb + ", apartment="
+                + apartment
+                + '}';
+    }
+
+    @Override
     public boolean equals(final Object o) {
         if (this == o) {
             return true;
@@ -53,7 +69,9 @@ final public class Ownership {
         }
 
         Ownership ownership = (Ownership) o;
-        return Objects.equals(memberOsbb, ownership.memberOsbb) && Objects.equals(apartment, ownership.apartment);
+
+        return Objects.equals(memberOsbb, ownership.memberOsbb)
+                && Objects.equals(apartment, ownership.apartment);
     }
 
     @Override

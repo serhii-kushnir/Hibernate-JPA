@@ -1,13 +1,19 @@
 package org.example.data;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.IdClass;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
 
 import java.util.Objects;
 
 @Entity
 @Table(name = "residents")
 @IdClass(Resident.class)
-final public class Resident {
+public final class Resident {
 
     @Id
     @ManyToOne
@@ -25,7 +31,9 @@ final public class Resident {
     public Resident() {
     }
 
-    public Resident(final MemberOsbb memberOsbb, final Apartment apartment, final boolean entryRightsTerritory) {
+    public Resident(final MemberOsbb memberOsbb,
+                    final Apartment apartment,
+                    final boolean entryRightsTerritory) {
         this.memberOsbb = memberOsbb;
         this.apartment = apartment;
         this.entryRightsTerritory = entryRightsTerritory;
@@ -77,7 +85,10 @@ final public class Resident {
         }
 
         Resident resident = (Resident) o;
-        return entryRightsTerritory == resident.entryRightsTerritory && Objects.equals(memberOsbb, resident.memberOsbb) && Objects.equals(apartment, resident.apartment);
+
+        return entryRightsTerritory == resident.entryRightsTerritory
+                && Objects.equals(memberOsbb, resident.memberOsbb)
+                && Objects.equals(apartment, resident.apartment);
     }
 
     @Override
