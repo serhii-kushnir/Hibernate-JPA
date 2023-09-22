@@ -2,10 +2,12 @@ package org.example;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 import jakarta.persistence.criteria.Subquery;
+
 import org.apache.log4j.Logger;
 import org.example.data.Apartment;
 import org.example.data.House;
@@ -17,10 +19,18 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-public class HibernateService {
-
+final class HibernateService {
     private static final Logger LOGGER = Logger.getLogger(HibernateService.class);
 
+    private static final int ZERO = 0;
+    private static final int ONE = 1;
+    private static final int TWO = 2;
+    private static final int THREE = 3;
+    private static final int FOUR = 4;
+    private static final int FIVE = 5;
+    private static final int SIX = 6;
+    private static final int SEVEN = 7;
+    private static final int EIGHT = 8;
     private static final String LINE = """
          |----------|------|-------------|--------------|------------------|---------|---------|----------|---------|
          """;
@@ -29,26 +39,68 @@ public class HibernateService {
          |----------|------|-------------|--------------|------------------|---------|---------|----------|---------|
          """;
 
-    public void getOwnerWithNotEnteTheTerritory(final EntityManagerFactory entityManagerFactory, final EntityManager entityManager) {
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Object[]> criteriaQuery = criteriaBuilder.createQuery(Object[].class);
+    public void printOwnersToConsole() {
+        List<Object[]> owners = getOwnersWithNotEnterTheTerritory();
 
-        Root<Resident> residentRoot = criteriaQuery.from(Resident.class);
-        Root<MemberOsbb> memberOsbbRoot = criteriaQuery.from(MemberOsbb.class);
-        Root<Apartment> apartmentRoot = criteriaQuery.from(Apartment.class);
-        Root<House> houseRoot = criteriaQuery.from(House.class);
+        System.out.print(LINE);
+        System.out.print(NAMES_COLUMNS);
 
-        criteriaQuery(criteriaQuery, criteriaBuilder, memberOsbbRoot, houseRoot, apartmentRoot, residentRoot);
+        for (Object[] result : owners) {
+            System.out.println(formatOwnersColumns(result));
+        }
 
-        List<Object[]> resultList = entityManager.createQuery(criteriaQuery).getResultList();
+        System.out.print(LINE);
 
-        printAllOwnersWithNotEnteTheTerritoryToConsole(resultList);
-        printAllOwnersWithNotEnterTheTerritoryToFile(resultList, "OwnerWithNotEnteTheTerritory.txt");
-
-        closable(entityManagerFactory, entityManager);
+        LOGGER.trace("The result is saved in the console");
     }
 
-    private static void criteriaQuery(CriteriaQuery<Object[]> criteriaQuery, CriteriaBuilder criteriaBuilder, Root<MemberOsbb> memberOsbbRoot, Root<House> houseRoot, Root<Apartment> apartmentRoot, Root<Resident> residentRoot) {
+    public void printOwnersToFile(final String filePath) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            List<Object[]> owners = getOwnersWithNotEnterTheTerritory();
+
+            writer.write(LINE);
+            writer.write(NAMES_COLUMNS);
+
+            for (Object[] result : owners) {
+                writer.write(formatOwnersColumns(result));
+                writer.newLine();
+            }
+
+            writer.write(LINE);
+
+            LOGGER.trace("The result is saved in the file: " + filePath);
+        } catch (IOException e) {
+            LOGGER.fatal("Failed to write to file: " + e.getMessage());
+        }
+    }
+
+    private List<Object[]> getOwnersWithNotEnterTheTerritory() {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("OSBB");
+        EntityManager em = emf.createEntityManager();
+
+        try {
+            CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+            CriteriaQuery<Object[]> criteriaQuery = criteriaBuilder.createQuery(Object[].class);
+
+            Root<Resident> residentRoot = criteriaQuery.from(Resident.class);
+            Root<MemberOsbb> memberOsbbRoot = criteriaQuery.from(MemberOsbb.class);
+            Root<Apartment> apartmentRoot = criteriaQuery.from(Apartment.class);
+            Root<House> houseRoot = criteriaQuery.from(House.class);
+
+            buildCriteriaQuery(criteriaQuery, criteriaBuilder, memberOsbbRoot, houseRoot, apartmentRoot, residentRoot);
+
+            return em.createQuery(criteriaQuery).getResultList();
+        } finally {
+            closeEntityManager(emf, em);
+        }
+    }
+
+    private void buildCriteriaQuery(final CriteriaQuery<Object[]> criteriaQuery,
+                                    final CriteriaBuilder criteriaBuilder,
+                                    final Root<MemberOsbb> memberOsbbRoot,
+                                    final Root<House> houseRoot,
+                                    final Root<Apartment> apartmentRoot,
+                                    final Root<Resident> residentRoot) {
         Subquery<Long> subquery = criteriaQuery.subquery(Long.class);
         Root<Resident> subqueryResidentRoot = subquery.from(Resident.class);
 
@@ -77,58 +129,29 @@ public class HibernateService {
                 );
     }
 
-    private void printAllOwnersWithNotEnteTheTerritoryToConsole(final List<Object[]> resultList) {
-        System.out.print(LINE);
-        System.out.print(NAMES_COLUMNS);
-
-        for (Object[] result : resultList) {
-            System.out.println(formatOwnersColunms(result));
-        }
-
-        System.out.print(LINE);
-    }
-
-    private void printAllOwnersWithNotEnterTheTerritoryToFile(final List<Object[]> resultList, final String filePath) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-            writer.write(LINE);
-            writer.write(NAMES_COLUMNS);
-
-            for (Object[] result : resultList) {
-                writer.write(formatOwnersColunms(result));
-                writer.newLine();
-            }
-
-            writer.write(LINE);
-
-            LOGGER.trace("The result is saved in the file: " + filePath);
-        } catch (IOException e) {
-            LOGGER.fatal("Failed to write to file: " + e.getMessage());
-        }
-    }
-
-    private String formatOwnersColunms(final Object[] objects) {
+    private String formatOwnersColumns(final Object[] objects) {
         return "|   "
-                + objects[0]
+                + objects[ZERO]
                 + "   | "
-                + objects[1]
+                + objects[ONE]
                 + " |     "
-                + objects[2]
+                + objects[TWO]
                 + "    |  "
-                + objects[3]
+                + objects[THREE]
                 + "  | "
-                + objects[4]
+                + objects[FOUR]
                 + "   | "
-                + objects[6]
+                + objects[FIVE]
                 + " |    "
-                + objects[5]
+                + objects[SIX]
                 + "    |    "
-                + objects[7]
+                + objects[SEVEN]
                 + "   |   "
-                + objects[8]
+                + objects[EIGHT]
                 + "  |   ";
     }
 
-    private void closable(final EntityManagerFactory entityManagerFactory, final EntityManager entityManager) {
+    private void closeEntityManager(final EntityManagerFactory entityManagerFactory, final EntityManager entityManager) {
         entityManagerFactory.close();
         entityManager.close();
     }

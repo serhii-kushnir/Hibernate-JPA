@@ -1,13 +1,22 @@
 package org.example.data;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Column;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.EnumType;
 
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "members_osbb")
-final public class MemberOsbb {
+public final class MemberOsbb {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -30,7 +39,15 @@ final public class MemberOsbb {
     public MemberOsbb() {
     }
 
-    public MemberOsbb(final int id, final int phoneNumber, final String surname, final String name, final String patronymic, final String email, final Role role, final List<Resident> residents, final List<Ownership> ownerships) {
+    public MemberOsbb(final int id,
+                      final int phoneNumber,
+                      final String surname,
+                      final String name,
+                      final String patronymic,
+                      final String email,
+                      final Role role,
+                      final List<Resident> residents,
+                      final List<Ownership> ownerships) {
         this.id = id;
         this.phoneNumber = phoneNumber;
         this.surname = surname;
@@ -152,7 +169,16 @@ final public class MemberOsbb {
         }
 
         MemberOsbb that = (MemberOsbb) o;
-        return id == that.id && phoneNumber == that.phoneNumber && Objects.equals(surname, that.surname) && Objects.equals(name, that.name) && Objects.equals(patronymic, that.patronymic) && Objects.equals(email, that.email) && role == that.role && Objects.equals(residents, that.residents) && Objects.equals(ownerships, that.ownerships);
+
+        return id == that.id
+                && phoneNumber == that.phoneNumber
+                && Objects.equals(surname, that.surname)
+                && Objects.equals(name, that.name)
+                && Objects.equals(patronymic, that.patronymic)
+                && Objects.equals(email, that.email)
+                && role == that.role
+                && Objects.equals(residents, that.residents)
+                && Objects.equals(ownerships, that.ownerships);
     }
 
     @Override
