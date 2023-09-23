@@ -21,7 +21,6 @@ import java.util.List;
 
 final class HibernateService {
     private static final Logger LOGGER = Logger.getLogger(HibernateService.class);
-
     private static final int ZERO = 0;
     private static final int ONE = 1;
     private static final int TWO = 2;
@@ -36,14 +35,12 @@ final class HibernateService {
          """;
     private static final String NAMES_COLUMNS = """
          | Прізвище | Ім'я | По батькові | Моб.Телефон  | Електрона пошта  | Вулиця  | Будинок | Квартира | Площадь |
-         |----------|------|-------------|--------------|------------------|---------|---------|----------|---------|
          """;
 
     public void printOwnersToConsole() {
         List<Object[]> owners = getOwnersWithNotEnterTheTerritory();
 
-        System.out.print(LINE);
-        System.out.print(NAMES_COLUMNS);
+        capPrinting();
 
         for (Object[] result : owners) {
             System.out.println(formatOwnersColumns(result));
@@ -58,8 +55,7 @@ final class HibernateService {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             List<Object[]> owners = getOwnersWithNotEnterTheTerritory();
 
-            writer.write(LINE);
-            writer.write(NAMES_COLUMNS);
+            capPrinting(writer);
 
             for (Object[] result : owners) {
                 writer.write(formatOwnersColumns(result));
@@ -72,6 +68,18 @@ final class HibernateService {
         } catch (IOException e) {
             LOGGER.fatal("Failed to write to file: " + e.getMessage());
         }
+    }
+
+    private static void capPrinting() {
+        System.out.print(LINE);
+        System.out.print(NAMES_COLUMNS);
+        System.out.print(LINE);
+    }
+
+    private static void capPrinting(final BufferedWriter writer) throws IOException {
+        writer.write(LINE);
+        writer.write(NAMES_COLUMNS);
+        writer.write(LINE);
     }
 
     private List<Object[]> getOwnersWithNotEnterTheTerritory() {
@@ -141,9 +149,9 @@ final class HibernateService {
                 + "  | "
                 + objects[FOUR]
                 + "   | "
-                + objects[FIVE]
-                + " |    "
                 + objects[SIX]
+                + " |    "
+                + objects[FIVE]
                 + "    |    "
                 + objects[SEVEN]
                 + "   |   "
