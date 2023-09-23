@@ -20,7 +20,7 @@ CREATE TABLE members_osbb(
 	`surname` VARCHAR(45) NOT NULL,
     `name` VARCHAR(255) NOT NULL,
 	`patronymic` VARCHAR(45) NOT NULL,
-    `role` ENUM('Учасник', 'Працівник', 'Член правління', 'Голова') NOT NULL,
+    `role` ENUM('Учасник', 'Працівник', 'Управляющий', 'Голова') NOT NULL,
     `phone_number` INT NOT NULL,
     `email` VARCHAR(255) NOT NULL
 );
